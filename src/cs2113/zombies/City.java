@@ -3,6 +3,7 @@ package cs2113.zombies;
 import cs2113.util.Helper;
 
 import java.awt.Color;
+import java.util.ArrayList;
 
 
 public class City {
@@ -10,11 +11,10 @@ public class City {
 	/** walls is a 2D array with an entry for each space in the city.
 	 *  If walls[x][y] is true, that means there is a wall in the space.
 	 *  else the space is free. Humans should never go into spaces that
-	 *  have a wall.
 	 */
 	private boolean walls[][];
 	private int width, height;
-
+	ArrayList<Human> humans = new ArrayList<>();
 	/**
 	 * Create a new City and fill it with buildings and people.
 	 * @param w width of city
@@ -40,9 +40,19 @@ public class City {
 	 */
 	private void populate(int numPeople)
 	{
-		// Generate numPeople new humans randomly placed around the city.
+		int c;
+		int r;
+		for (int i =0; i<numPeople; i++) {
+			c = Helper.nextInt(200);
+			r = Helper.nextInt(200);							// generate random numbers for x & y
+			while (walls[c][r]) {									// if it is inside the walls
+				c = Helper.nextInt(200);
+				r = Helper.nextInt(200);						// generate other random numbers
+			}
+			Human h = new Human (c, r);								// create a human
+			humans.add(h);											// add to 'humans' arraylist
+		}
 	}
-
 
 	/**
 	 * Generates a random set of numB buildings.
@@ -79,6 +89,9 @@ public class City {
 	 */
 	public void update() {
 		// Move humans, zombies, etc
+		for (Human h: humans) {
+			h.move(walls, width, height);						// move
+		}
 	}
 
 	/**
@@ -89,6 +102,7 @@ public class City {
 		ZombieSim.dp.clear(Color.black);
 
 		drawWalls();
+		drawHumans();											// draw humans
 	}
 
 	/**
@@ -108,6 +122,14 @@ public class City {
 				}
 			}
 		}
+	}
+//
+	private void drawHumans() {
+		// Draw humans
+		for (Human h: humans) {
+			h.draw();											// draw humans in the arrayList
+		}
+
 	}
 
 }
