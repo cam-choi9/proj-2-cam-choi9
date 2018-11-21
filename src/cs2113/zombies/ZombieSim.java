@@ -4,6 +4,8 @@ import cs2113.util.DotPanel;
 
 import java.awt.Color;
 import java.awt.Container;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 
 import javax.swing.JFrame;
 
@@ -63,6 +65,34 @@ public class ZombieSim extends JFrame {
 
 		/* Create our city */
 		City world = new City(MAX_X, MAX_Y, NUM_BUILDINGS, NUM_HUMANS);
+
+
+		this.addKeyListener(new KeyListener() {
+			@Override
+			public void keyTyped(KeyEvent e) {
+				char c = e.getKeyChar();
+				if (c == ' ') {
+					world.update();
+					world.draw();
+				}
+			}
+
+			@Override
+			public void keyPressed(KeyEvent e) {
+
+			}
+
+			@Override
+			public void keyReleased(KeyEvent e) {
+
+			}
+
+
+		});
+
+
+
+
 
 		/* This is the Run Loop (aka "simulation loop" or "game loop")
 		 * It will loop forever, first updating the state of the world
